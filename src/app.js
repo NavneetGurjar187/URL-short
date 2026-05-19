@@ -8,6 +8,13 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
+
+app.get("/", (req,res)=>{
+    res.status(200).json({
+        message : "URL Shortener Backend Running 🚀"
+    })
+})
+
 app.use("/api/auth",userRoutes)
 app.use("/api/url",urlRoutes)
 
