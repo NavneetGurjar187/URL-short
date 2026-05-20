@@ -23,7 +23,7 @@ async function registerUser(req,res){
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        const newuser = userModel.create({
+        const newuser = await userModel.create({
             name,
             email,
             password: hashedPassword,
@@ -81,7 +81,7 @@ async function loginUser(req,res){
 
         const isPasswordValid = await bcrypt.compare(password,user.password)
 
-        if(!password){
+        if(!isPasswordValid){
             return res.status(400).json({
                 message: "Invalid password"
             })
@@ -145,8 +145,16 @@ async function getMe(req,res){
 
 }
 
+async function logoutUser(req,res){
+    res.clearCookie("token")
+    res.status(200).json({
+        message: "Logout successful"
+    })
+}
+
 module.exports = {
     registerUser,
     loginUser,
+    logoutUser,
     getMe
 }
